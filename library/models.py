@@ -11,6 +11,9 @@ class User(models.Model):
     last_name = models.CharField(max_length=50)
     gender = models.IntegerField(choices=enums.GenderEnum.choices())
 
+    def __str__(self):
+        return "%s %s %s %s" % (self.username, self.password, self.first_name, self.last_name)
+
 
 class Book(models.Model):
     book_title = models.CharField(max_length=450)
@@ -23,6 +26,9 @@ class Book(models.Model):
     copyright_year = models.IntegerField(blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True, blank=True)
     status = models.IntegerField(choices=enums.BookStatusEnum.choices(), default=enums.BookStatusEnum.ACTIVE)
+
+    def __str__(self):
+        return "%s %s %s %s %s" % (self.book_title, self.author, self.book_pub, self.publisher_name, self.isbn)
 
 
 class BorrowBook(models.Model):

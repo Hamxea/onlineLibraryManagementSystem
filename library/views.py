@@ -22,7 +22,7 @@ def all_books(request):
 
 
 def books_borrowed_by_user(request, user_id):
-    """    :param request, user_id:
+    """:param request, user_id:
     :return all books borrowed by a given user"""
     return HttpResponse("List all the books borrowed by user: %s" % user_id)
 
