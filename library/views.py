@@ -2,17 +2,31 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from .models import User
+from django.template import loader
+
+from .models import User, Book
 
 
 def index(request):
-    return HttpResponse("Welcome to LMS")
+    book_list = Book.objects.order_by('-date_added')
+    context = {'book_list': book_list}
+    return render(request, 'library/index.html', context)
+
+
+def book_detail(request, book_id):
+    """:arg request
+    :param book_id
+     :return all users"""
+    book_details = get_object_or_404(Book, pk=book_id)
+    return render(request, 'library/detail.html', {'Book details': book_details})
 
 
 def users(request):
     """:arg request
     :return all users"""
-    return HttpResponse("All users")
+    users_list = User.objects.order_by('-date_added')
+    context = {'All users list': users_list}
+    return render(request, 'library/users.html', context)
 
 
 def get_user(request, user_id):
@@ -20,13 +34,12 @@ def get_user(request, user_id):
     :param user_id
     :return user info"""
 
-    """
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
         raise Http404("User does not exist")
-    """
-    user = get_object_or_404(User, pk=user_id)
+
+    # user = get_object_or_404(User, pk=user_id)
     return render(request, 'library/user.html', {'User': user})  # HttpResponse("User info: %s" % user_id)
 
 
@@ -61,10 +74,13 @@ def approve_request_book(request, book_id):
     return HttpResponse("Approved book: %s" % book_id)
 
 
-def all_books(request):
+def all_books(request, user_id):
     """:arg request
+    :param user_id
     :return all books"""
-    return HttpResponse("List of all the books in the system")
+    book_list = Book.objects.order_by('-date_added')
+    context = {'List of all the books in the system': book_list}
+    return render(request, 'library/books.html', context)
 
 
 def books_borrowed_by_user(request, user_id):
