@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.template import loader
 
-from .models import User, Book
+from .models import User, Book, BorrowBook
 
 
 def index(request):
@@ -13,12 +13,12 @@ def index(request):
     return render(request, 'library/index.html', context)
 
 
-def book_detail(request, book_id):
+def book_details(request, book_id):
     """:arg request
     :param book_id
      :return all users"""
-    book_details = get_object_or_404(Book, pk=book_id)
-    return render(request, 'library/detail.html', {'Book details': book_details})
+    book_detail = get_object_or_404(Book, pk=book_id)
+    return render(request, 'library/detail.html', {'Book details': book_detail})
 
 
 def users(request):
@@ -101,5 +101,6 @@ def list_of_available_books(request):
     :return return all available books in the system"""
 
 
-def borrow(request, user_id, book_id):
-    return HttpResponse("The book detail borrowed is: %s %s" % user_id, book_id)
+def borrow(request, book_id):
+    borrowed_books = get_object_or_404(BorrowBook, pk= book_id)
+    return render(request, 'library/borrow.html', {'Books borrowed': borrowed_books})

@@ -12,7 +12,7 @@ class User(models.Model):
     gender = models.IntegerField(choices=enums.GenderEnum.choices())
 
     def __str__(self):
-        return "%s" % self.username
+        return "%s %s %s" % (self.username, self.first_name, self.last_name)
 
 
 class Book(models.Model):
